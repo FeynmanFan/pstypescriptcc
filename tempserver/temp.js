@@ -1,3 +1,4 @@
+const WebSocket = require('ws');
 const http = require("http");
 
 const host = 'localhost';
@@ -19,42 +20,39 @@ function getRandom(min, max){
 }
 
 function formatPacket(value, id){
-	return JSON.stringify({ "value": value, "sensorId": id});
+	return JSON.stringify({ "value": value, "time": new Date().toISOString(), "sensorId": id});
+}
+
+function getPacket(){
+	const randomValue = getRandom(MIN_TEMP, MAX_TEMP);
+	return formatPacket(randomValue, 12345);
 }
 
 const server = http.createServer((req, res) => {
   res.writeHead(200, { 'Content-Type': 'application/JSON' });
-
-  const randomValue = getRandom(MIN_TEMP, MAX_TEMP);
-
-  // Send the random value as the response
-  res.end(formatPacket(randomValue, 12345));
+  res.end(getPacket());
 });
 
-setInterval(() => {
-  // Generate a new random value
-  const randomValue = getRandom(MIN_TEMP, MAX_TEMP);
+const wss = new WebSocket.Server({server});
 
-  // Broadcast the random value to all connected clients
-  clients.forEach((client) => {
-    client.write(formatPacket(randomValue, 12345));
-  });
-}, 1000);
+wss.on('connection', (ws) => {
+  console.log('Client connected');
 
+  // Simulate sending a JSON message every second
+  const intervalId = setInterval(() => {
+	const value = getRandom(MIN_TEMP, MAX_TEMP);
+    
+    // Send a JSON message to the connected client
+    ws.send(getPacket());
+  }, 1000);
 
-server.on('connection', (socket) => {
-  // Add the new client to the array
-  clients.push(socket);
-
-  // Remove the client from the array when it disconnects
-  socket.on('close', () => {
-    const index = clients.indexOf(socket);
-    if (index !== -1) {
-      clients.splice(index, 1);
-    }
+  // Event handler for when a client closes the connection
+  ws.on('close', () => {
+    console.log('Client disconnected');
+    clearInterval(intervalId); // Stop the interval when the client disconnects
   });
 });
 
 server.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}/`);
+  console.log(`WebSocket server listening on port ${PORT}`);
 });
