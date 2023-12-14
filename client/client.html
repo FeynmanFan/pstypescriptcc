@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Temperature Status</title>
+	<script src="https://d3js.org/d3.v5.min.js"></script>
+	<script src="updatechart.js" defer></script>
+	<style>
+    /* Style for the line chart container */
+    #container {
+      width: 100%;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    /* Style for the line chart SVG */
+    svg {
+      overflow: visible;
+    }
+
+    /* Style for the line */
+    path.line {
+      fill: none;
+      stroke: steelblue;
+      stroke-width: 2;
+    }
+	table{
+		border: 1px solid gray;
+		cell-spacing: 0px;
+	}
+	
+	table td{
+		text-align: center;
+	}
+	
+	table thead{
+		background-color: cornsilk;
+	}
+  </style>   
+</head>
+<body>
+	<div id="controlBox">
+		<label for="pauseButton">Pause/Unpause</label>
+		<input type="checkbox" id="pauseButton" />
+	</div>
+	<div id="container">
+		<svg id="chart"></svg>
+	</div>
+	
+	<table id="dataTable">
+		<thead>
+			<th>
+				#
+			</th>
+			<th>
+				Value
+			</th>
+			<th>
+				Sensor Id
+			</th>
+			<th>
+				Time Received
+			</th>
+		</thead>
+		<tbody>
+			<tr>
+				<td colspan="4">
+					Waiting for ten data points...
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>
