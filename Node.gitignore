@@ -131,3 +131,5 @@ dist
 
 .vs/
 ../node_modules/
+tempserver/node_modules/
+tempserver/package-lock.json
