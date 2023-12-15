@@ -137,3 +137,6 @@ dist
 ./tempserver/node_modules
 ./tempserver/package-lock.json
 **/tempserver/node_modules/
+
+node_modules/
+**/package-lock.json
