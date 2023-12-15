@@ -130,6 +130,9 @@ dist
 .pnp.*
 
 .vs/
+.vs
 ../node_modules/
+../node_modules
 tempserver/node_modules/
+tempserver/node_modules
 tempserver/package-lock.json
