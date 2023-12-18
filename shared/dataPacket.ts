@@ -41,11 +41,11 @@ export class dataPacket {
         }
     }
 
-    toString() {
+    toString(): string {
         return JSON.stringify({ "value": this.value, "time": this.time, "sensorId": this.sensorId });
     }
 
-    static getRandom(min, max) {
+    static getRandom(min, max): number {
         const multiplier = Math.pow(10, dataPacket.DECIMAL_PLACES);
 
         const randomShifted = Math.floor(Math.random() * (max - min + 1) * multiplier) + min * multiplier;
@@ -53,7 +53,7 @@ export class dataPacket {
         return randomShifted / multiplier;
     }
 
-    static simulatePacket() {
+    static simulatePacket(): dataPacket {
         return new dataPacket("12345", new Date().getTime(), dataPacket.getRandom(dataPacket.MIN_TEMP, dataPacket.MAX_TEMP));
     }
 }
