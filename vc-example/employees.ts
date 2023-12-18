@@ -1,5 +1,5 @@
 class Employee {
-    constructor(firstName, lastName, employeeId) {
+    constructor(firstName: string, lastName: string, employeeId: string) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.employeeId = employeeId;
@@ -16,11 +16,11 @@ class Employee {
 
 document.addEventListener("DOMContentLoaded", function () {
 	const employees = [
-		new Employee("John", "Doe", 1),
-		new Employee("Jane", "Smith", 2),
-		new Employee("Bob", "Johnson", 3)
+		new Employee("John", "Doe", "1"),
+		new Employee("Jane", "Smith", "2"),
+		new Employee("Bob", "Johnson", "3")
 	];
-
+		
 	function generateEmployeeTable() {
 		const table = document.createElement("table");
 		const headerRow = table.insertRow(0);
