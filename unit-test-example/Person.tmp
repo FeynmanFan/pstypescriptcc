@@ -1,0 +1,49 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Person = void 0;
+let Person = (function(){
+    function Person(name, age){
+        this.name = name;
+        this.age = age;
+    }
+    Object.defineProperty(Person.prototype, "name", {
+        get: function () {
+            return this._name;
+        },
+        set: function (value) {
+            this._name = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+
+    Object.defineProperty(Person.prototype, "age", {
+        get: function () {
+            return this._age;
+        },
+        set: function (value) {
+            if (!Person.isNumber(value)){
+                throw new Error("That value '" + value + "' is not a number.")
+            } 
+
+            if(!Person.isValidAge(value)){
+                throw new Error("That value '" + value + "' is not a valid age.")
+            }
+
+            this._age = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+
+    Person.isNumber = function (value){
+        return typeof(value) == "number";
+    };
+
+    Person.isValidAge = function (value){
+        return value >= 0 && value <= 120;
+    };
+
+    return Person;
+}());
+exports.Person = Person;
