@@ -9,7 +9,7 @@ class Employee {
 	lastName: string;
 	employeeId: string;
 	
-    FriendlyName() {
+	FriendlyName() {
         return `${this.firstName} ${this.lastName}`;
     }
 }
