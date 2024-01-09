@@ -1,6 +1,11 @@
 {
+  "type": "module",
   "dependencies": {
     "js": "^0.1.0",
     "ws": "^8.15.1"
+  },
+  "devDependencies": {
+    "@types/d3": "^7.4.3",
+    "@types/node": "^20.10.7"
   }
 }

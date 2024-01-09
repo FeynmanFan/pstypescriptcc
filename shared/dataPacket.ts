@@ -9,9 +9,9 @@ export class dataPacket {
     static MAX_TEMP = 2;
 
     constructor(sensorId: string, time: number, value: number) {
-        this.sensorId = sensorId;
-        this.time = time;
-        this.value = value;
+        this._sensorId = sensorId;
+        this._time = time;
+        this._value = value;
     }
 
     get sensorId() {
@@ -30,7 +30,7 @@ export class dataPacket {
         this._time = value;
     }
 
-    get value() {
+    get value(): number {
         return this._value;
     }
 
@@ -45,7 +45,7 @@ export class dataPacket {
         return JSON.stringify({ "value": this.value, "time": this.time, "sensorId": this.sensorId });
     }
 
-    static getRandom(min, max): number {
+    static getRandom(min: number, max: number): number {
         const multiplier = Math.pow(10, dataPacket.DECIMAL_PLACES);
 
         const randomShifted = Math.floor(Math.random() * (max - min + 1) * multiplier) + min * multiplier;

@@ -1,6 +1,15 @@
-document.addEventListener('DOMContentLoaded', () => {
+import { ChartObserver } from "./ChartObserver.js"
+import { Dispatcher } from "./Dispatcher.js"
+import { dataPacket } from "../shared/dataPacket.js"
+
+idocument.addEventListener('DOMContentLoaded', () => {
 	const socket = new WebSocket('ws://localhost:2112');
-	
+
+	let co = new ChartObserver("#chart");
+
+	let disp = new Dispatcher();
+	disp.register(co);
+
 	socket.addEventListener('open', (event) => {
 		console.log('Connected:', event);
 	});
@@ -30,53 +39,12 @@ document.addEventListener('DOMContentLoaded', () => {
 		  data.shift();
 		}
 
-		updateChart();
+		const packet = new dataPacket(event.data.sensorId, parseInt(event.data.time), parseInt(event.data.value));
+
+		disp.notify(packet)
+
 		updateTable(data);
 	});
-
-	const width = 1024;
-	const height = 768;
-
-	const svg = d3.select('#chart')
-		.attr('width', width)
-		.attr('height', height);
-
-	const g = svg.append('g')
-		.attr('transform', 'translate(50, 50)');
-
-	const xScale = d3.scaleLinear().range([0, width - 100]);
-	const yScale = d3.scaleLinear().range([height - 100, 0]);
-
-	const xAxis = d3.axisBottom().scale(xScale);
-	const yAxis = d3.axisLeft().scale(yScale);
-
-	svg.append('g')
-		.attr('class', 'x-axis')
-		.attr('transform', `translate(50, ${height - 50})`);
-
-	svg.append('g')
-		.attr('class', 'y-axis')
-		.attr('transform', 'translate(50, 50)');
-
-	function updateChart() {
-		console.info("Updating chart");
-	  
-		xScale.domain([0, data.length - 1]);
-		yScale.domain([d3.min(data, d => d.value), d3.max(data, d => d.value)]);
-
-		svg.select('.x-axis').call(xAxis);
-		svg.select('.y-axis').call(yAxis);
-
-		const line = d3.line()
-			.x((d, i) => xScale(i))
-			.y(d => yScale(d.value));
-
-		g.select('.line').remove(); 
-		g.append('path')
-			.datum(data)
-			.attr('class', 'line')
-			.attr('d', line);
-	}
   
 	function updateTable(data){
 		if (data.length >= 9){
