@@ -1,5 +1,5 @@
 import { dataPacket } from "../shared/dataPacket"
-import { Observer } from "./observer"
+import { Observer } from "./observer.js"
 import * as d3 from "d3";
 
 export class ChartObserver extends Observer {
@@ -9,7 +9,6 @@ export class ChartObserver extends Observer {
 	g: any;
 	xAxis: d3.Axis<d3.NumberValue>;
 	yAxis: d3.Axis<d3.NumberValue>;
-	allData: Array<dataPacket> = [];
 
 	constructor(chartId: string) {
 		super();
@@ -39,29 +38,22 @@ export class ChartObserver extends Observer {
 			.attr('transform', 'translate(50, 50)');
 	}
 
-	receiveNotification(data: dataPacket) {
+	receiveNotification() {
 		this.svg = d3.select("body");
 
-		this.updateChart(data);
-	}
-
-	updateChart(data: dataPacket) {
-		console.info("Updating chart");
-
-		this.xScale.domain([0, this.allData.length - 1]);
-
-		this.yScale.domain([d3.min(this.allData, d => d.value as number) as number, d3.max(this.allData, d => d.value as number) as number]);
+		this.xScale.domain([0, Observer.allData.length - 1]);
+		this.yScale.domain([d3.min(Observer.allData, d => d.value) as number, d3.max(Observer.allData, d=>d.value) as number]);
 
 		this.svg.select('.x-axis').call(this.xAxis);
 		this.svg.select('.y-axis').call(this.yAxis);
 
-		const line = d3.line()
-			.x((d) => this.xScale(d[0]))
-			.y((d) => this.yScale(d[1]));
+		const line = d3.line<dataPacket>()
+			.x((d, i) => this.xScale(i))
+			.y((d) => this.yScale(d.value));
 
 		this.g.select('.line').remove();
 		this.g.append('path')
-			.datum(data)
+			.datum(Observer.allData)
 			.attr('class', 'line')
 			.attr('d', line);
 	}
