@@ -144,6 +144,6 @@ node_modules/
 /client/observer.js
 *.map
 *.d.ts
-/client/ChartObserver.d.ts
-/client/ChartObserver.js
-/shared/dataPacket.js
+shared/dataPacket.js
+client/ConsoleObserver.js
+client/TableObserver.js
