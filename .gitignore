@@ -140,3 +140,10 @@ dist
 
 node_modules/
 **/package-lock.json
+/client/Dispatcher.js
+/client/observer.js
+*.map
+*.d.ts
+/client/ChartObserver.d.ts
+/client/ChartObserver.js
+/shared/dataPacket.js
